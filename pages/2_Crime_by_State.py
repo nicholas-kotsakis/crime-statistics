@@ -8,7 +8,6 @@ st.subheader('The following selections allow you to view how states compare in t
 
 df = pd.read_csv('data/crimedata.csv')
 
-
 def graph_by_state(col, estimator='mean'):
     if estimator == 'mean':
         state = df.groupby('state')[col].mean().reset_index()

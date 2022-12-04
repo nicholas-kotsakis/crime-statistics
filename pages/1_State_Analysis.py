@@ -4,7 +4,7 @@ import numpy as np
 import altair as alt
 
 st.title("State Analysis")
-st.subheader('Select the state and two attributes to display on the X and Y axises of the scatterplot')
+st.subheader('Select the state and two attributes to display on the X and Y axis of the scatterplot')
 
 df = pd.read_csv("data/crimedata.csv")
 
@@ -71,8 +71,8 @@ attributes = {
     'Larcenies': 'larcenies',
     'Burglaries': 'burglaries',
     'Arsons': 'arsons',
-    'Non-Violent Crimes': 'NonViolentCrimePerCap',
-    'Violent Crimes': 'ViolentCrimePerCap',
+    'Non-Violent Crimes': 'NonViolentCrimesTot',
+    'Violent Crimes': 'ViolentCrimesTot',
     'Murders (per capita)': 'murdersPerCap',
     'Assaults (per capita)': 'assaultsPerCap',
     'Robbery (per capita)': 'robberiesPerCap',
@@ -95,14 +95,17 @@ attributes = {
     'Percent Unemployed': 'PctUnemployed',
     'Population Density': 'PopDens'
 }
+col1, col2, col3 = st.columns(3)
+with col1:
+    state = st.selectbox(label='State', options=df['state'].sort_values().unique(), index=25)
+with col2:
+    opt1 = st.selectbox(label='X-Axis', options=list(attributes.keys()), index=29)
+with col3:
+    opt2 = st.selectbox(label='Y-Axis', options=list(attributes.keys()), index=18)
 
-state = st.selectbox(label='State', options=df['state'].sort_values().unique())
-opt1 = st.selectbox(label='X-Axis', options=list(attributes.keys()))
-opt2 = st.selectbox(label='Y-Axis', options=list(attributes.keys()))
+selected_state = df[df['state'] == state]
 
-df = df[df['state'] == state]
-
-scatterplot = alt.Chart(df).mark_point().encode(
+scatterplot = alt.Chart(selected_state).mark_point().encode(
 # Map the sepalLength to x-axis
     x = attributes.get(opt1) + ':Q',
 # Map the petalLength to y-axis
